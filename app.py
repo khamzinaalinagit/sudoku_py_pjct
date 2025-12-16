@@ -172,3 +172,21 @@ class SudokuApp(tk.Tk):
                 t = self.cells[r][c].get().strip()
                 board[r][c] = int(t) if t else 0
         return board
+
+    def new_game(self, difficulty_name: str) -> None:
+        try:
+            diff = DIFFICULTIES.get(difficulty_name, DIFFICULTIES["Средняя"])
+            self.status.set(f"Генерация: {diff.name}…")
+
+            sol = generate_full_solution()
+            puz = make_puzzle_from_solution(sol, blanks=diff.blanks, ensure_unique=True)
+
+            self.solution = sol
+            self.puzzle = puz
+            self._apply_board(puz)
+            self._lock_fixed_cells(puz)
+
+            self.status.set(f"Новая игра: {diff.name}")
+        except Exception as exc:
+            self.status.set("Ошибка генерации.")
+            messagebox.showerror("Ошибка", f"Не удалось создать игру:\n{exc}")
