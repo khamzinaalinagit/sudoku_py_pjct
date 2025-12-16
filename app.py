@@ -143,3 +143,12 @@ class SudokuApp(tk.Tk):
                     self.cells[r][c].config(font=("Segoe UI", size))
         except Exception:
             pass
+
+        def _apply_board(self, board: list[list[int]]) -> None:
+            for r in range(GRID_SIZE):
+                for c in range(GRID_SIZE):
+                    e = self.cells[r][c]
+                    e.config(state="normal")
+                    e.delete(0, tk.END)
+                    if board[r][c] != 0:
+                        e.insert(0, str(board[r][c]))
