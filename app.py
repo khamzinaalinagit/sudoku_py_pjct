@@ -218,3 +218,29 @@ class SudokuApp(tk.Tk):
                         self.cells[r][c].config(bg="#ffd6d6")
         except Exception:
             pass
+
+    def check_board(self) -> None:
+        try:
+            if self.solution is None:
+                raise SudokuError("Нет активной игры.")
+            user = self.get_user_board()
+
+            empties = sum(1 for r in range(9) for c in range(9) if user[r][c] == 0)
+            wrong = sum(
+                1 for r in range(9) for c in range(9)
+                if user[r][c] != 0 and user[r][c] != self.solution[r][c]
+            )
+
+            self.refresh_mistakes_highlight()
+
+            if wrong == 0 and empties == 0:
+                self.status.set("Готово! Решение верное.")
+                messagebox.showinfo("Sudoku", "Верно! Судоку решено.")
+            elif wrong == 0:
+                self.status.set(f"Ошибок нет, пустых: {empties}.")
+                messagebox.showinfo("Sudoku", f"Пока верно. Осталось: {empties}.")
+            else:
+                self.status.set(f"Ошибок: {wrong}.")
+                messagebox.showwarning("Sudoku", f"Найдено ошибок: {wrong}.")
+        except Exception as exc:
+            messagebox.showerror("Ошибка", f"Проверка не выполнена:\n{exc}")
