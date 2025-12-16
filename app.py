@@ -190,3 +190,31 @@ class SudokuApp(tk.Tk):
         except Exception as exc:
             self.status.set("Ошибка генерации.")
             messagebox.showerror("Ошибка", f"Не удалось создать игру:\n{exc}")
+
+    def reset_to_puzzle(self) -> None:
+        try:
+            if self.puzzle is None:
+                raise SudokuError("Нет активной игры.")
+            self._apply_board(self.puzzle)
+            self._lock_fixed_cells(self.puzzle)
+            self.status.set("Сброс выполнен.")
+        except Exception as exc:
+            messagebox.showwarning("Предупреждение", str(exc))
+
+    def refresh_mistakes_highlight(self) -> None:
+        try:
+            for r in range(9):
+                for c in range(9):
+                    self.cells[r][c].config(bg="white")
+
+            if not self.show_mistakes.get() or self.solution is None:
+                return
+
+            user = self.get_user_board()
+            for r in range(9):
+                for c in range(9):
+                    v = user[r][c]
+                    if v != 0 and v != self.solution[r][c] and not self.fixed[r][c]:
+                        self.cells[r][c].config(bg="#ffd6d6")
+        except Exception:
+            pass
