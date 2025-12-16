@@ -128,3 +128,18 @@ class SudokuApp(tk.Tk):
             return proposed.isdigit() and 1 <= int(proposed) <= 9
         except Exception:
             return False
+
+    def _on_cell_changed(self, _r: int, _c: int) -> None:
+        if self.show_mistakes.get():
+            self.refresh_mistakes_highlight()
+    def _on_resize(self, _event: tk.Event) -> None:
+        try:
+            w = max(self.winfo_width(), 520)
+            h = max(self.winfo_height(), 520)
+            cell_px = min((w - 220) // 9, (h - 120) // 9)
+            size = max(14, min(28, cell_px // 2))
+            for r in range(GRID_SIZE):
+                for c in range(GRID_SIZE):
+                    self.cells[r][c].config(font=("Segoe UI", size))
+        except Exception:
+            pass
