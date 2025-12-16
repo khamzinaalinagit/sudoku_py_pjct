@@ -116,3 +116,15 @@ class SudokuApp(tk.Tk):
             self.board_frame.grid_columnconfigure(i, weight=1)
 
         self.bind("<Configure>", self._on_resize)
+
+    def _validate_digit(self, proposed: str, action: str) -> bool:
+        try:
+            if action == "0":
+                return True
+            if proposed == "":
+                return True
+            if len(proposed) > 1:
+                return False
+            return proposed.isdigit() and 1 <= int(proposed) <= 9
+        except Exception:
+            return False
