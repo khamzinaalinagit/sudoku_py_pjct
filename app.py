@@ -144,24 +144,31 @@ class SudokuApp(tk.Tk):
         except Exception:
             pass
 
-        def _apply_board(self, board: list[list[int]]) -> None:
-            for r in range(GRID_SIZE):
-                for c in range(GRID_SIZE):
-                    e = self.cells[r][c]
-                    e.config(state="normal")
-                    e.delete(0, tk.END)
-                    if board[r][c] != 0:
-                        e.insert(0, str(board[r][c]))
+    def _apply_board(self, board: list[list[int]]) -> None:
+         for r in range(GRID_SIZE):
+            for c in range(GRID_SIZE):
+                e = self.cells[r][c]
+                e.config(state="normal")
+                e.delete(0, tk.END)
+                if board[r][c] != 0:
+                    e.insert(0, str(board[r][c]))
 
-        def _lock_fixed_cells(self, puzzle: list[list[int]]) -> None:
-            self.fixed = [[False] * GRID_SIZE for _ in range(GRID_SIZE)]
-            for r in range(GRID_SIZE):
-                for c in range(GRID_SIZE):
-                    e = self.cells[r][c]
-                    if puzzle[r][c] != 0:
-                        self.fixed[r][c] = True
-                        e.config(disabledforeground="black")
-                        e.config(state="disabled")
-                    else:
-                        e.config(state="normal")
-            self.refresh_mistakes_highlight()
+    def _lock_fixed_cells(self, puzzle: list[list[int]]) -> None:
+        self.fixed = [[False] * GRID_SIZE for _ in range(GRID_SIZE)]
+        for r in range(GRID_SIZE):
+            for c in range(GRID_SIZE):
+                e = self.cells[r][c]
+                if puzzle[r][c] != 0:
+                    self.fixed[r][c] = True
+                    e.config(disabledforeground="black")
+                    e.config(state="disabled")
+                else:
+                     e.config(state="normal")
+        self.refresh_mistakes_highlight()
+    def get_user_board(self) -> list[list[int]]:
+        board = [[0] * GRID_SIZE for _ in range(GRID_SIZE)]
+        for r in range(GRID_SIZE):
+            for c in range(GRID_SIZE):
+                t = self.cells[r][c].get().strip()
+                board[r][c] = int(t) if t else 0
+        return board
