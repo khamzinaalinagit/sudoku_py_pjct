@@ -152,3 +152,16 @@ class SudokuApp(tk.Tk):
                     e.delete(0, tk.END)
                     if board[r][c] != 0:
                         e.insert(0, str(board[r][c]))
+
+        def _lock_fixed_cells(self, puzzle: list[list[int]]) -> None:
+            self.fixed = [[False] * GRID_SIZE for _ in range(GRID_SIZE)]
+            for r in range(GRID_SIZE):
+                for c in range(GRID_SIZE):
+                    e = self.cells[r][c]
+                    if puzzle[r][c] != 0:
+                        self.fixed[r][c] = True
+                        e.config(disabledforeground="black")
+                        e.config(state="disabled")
+                    else:
+                        e.config(state="normal")
+            self.refresh_mistakes_highlight()
