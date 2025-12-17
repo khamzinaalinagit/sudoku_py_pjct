@@ -307,3 +307,17 @@ class SudokuApp(tk.Tk):
             self.status.set(f"Загружено: {path}")
         except Exception as exc:
             messagebox.showerror("Ошибка", f"Не удалось загрузить:\n{exc}")
+ def about(self) -> None:
+        messagebox.showinfo(
+            "О программе",
+            "Sudoku на Tkinter.\n"
+            "Меню, масштабирование, проверка, подсказки, сохранение.\n"
+            "Обработка ошибок через try/except."
+        )
+
+    def safe_exit(self) -> None:
+        try:
+            if messagebox.askyesno("Выход", "Выйти из приложения?"):
+                self.destroy()
+        except Exception:
+            self.destroy()
