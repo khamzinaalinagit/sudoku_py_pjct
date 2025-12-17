@@ -292,3 +292,18 @@ class SudokuApp(tk.Tk):
             self.status.set(f"Сохранено: {path}")
         except Exception as exc:
             messagebox.showerror("Ошибка", f"Не удалось сохранить:\n{exc}")
+ def ui_load(self) -> None:
+        try:
+            path = filedialog.askopenfilename(
+                title="Загрузить игру",
+                filetypes=[("Text files", "*.txt")]
+            )
+            if not path:
+                return
+            puzzle, solution, user = load_game(path)
+            self.puzzle, self.solution = puzzle, solution
+            self._apply_board(user)
+            self._lock_fixed_cells(puzzle)
+            self.status.set(f"Загружено: {path}")
+        except Exception as exc:
+            messagebox.showerror("Ошибка", f"Не удалось загрузить:\n{exc}")
