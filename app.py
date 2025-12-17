@@ -30,6 +30,7 @@ class SudokuApp(tk.Tk):
         self._build_layout()
 
         self.new_game("Средняя")
+
     def _build_menu(self) -> None:
         menu = tk.Menu(self)
 
@@ -132,6 +133,7 @@ class SudokuApp(tk.Tk):
     def _on_cell_changed(self, _r: int, _c: int) -> None:
         if self.show_mistakes.get():
             self.refresh_mistakes_highlight()
+
     def _on_resize(self, _event: tk.Event) -> None:
         try:
             w = max(self.winfo_width(), 520)
@@ -145,7 +147,7 @@ class SudokuApp(tk.Tk):
             pass
 
     def _apply_board(self, board: list[list[int]]) -> None:
-         for r in range(GRID_SIZE):
+        for r in range(GRID_SIZE):
             for c in range(GRID_SIZE):
                 e = self.cells[r][c]
                 e.config(state="normal")
@@ -163,8 +165,9 @@ class SudokuApp(tk.Tk):
                     e.config(disabledforeground="black")
                     e.config(state="disabled")
                 else:
-                     e.config(state="normal")
+                    e.config(state="normal")
         self.refresh_mistakes_highlight()
+
     def get_user_board(self) -> list[list[int]]:
         board = [[0] * GRID_SIZE for _ in range(GRID_SIZE)]
         for r in range(GRID_SIZE):
@@ -292,7 +295,8 @@ class SudokuApp(tk.Tk):
             self.status.set(f"Сохранено: {path}")
         except Exception as exc:
             messagebox.showerror("Ошибка", f"Не удалось сохранить:\n{exc}")
- def ui_load(self) -> None:
+
+    def ui_load(self) -> None:
         try:
             path = filedialog.askopenfilename(
                 title="Загрузить игру",
@@ -307,7 +311,8 @@ class SudokuApp(tk.Tk):
             self.status.set(f"Загружено: {path}")
         except Exception as exc:
             messagebox.showerror("Ошибка", f"Не удалось загрузить:\n{exc}")
- def about(self) -> None:
+
+    def about(self) -> None:
         messagebox.showinfo(
             "О программе",
             "Sudoku на Tkinter.\n"
