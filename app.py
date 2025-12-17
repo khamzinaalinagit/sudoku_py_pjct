@@ -275,3 +275,20 @@ class SudokuApp(tk.Tk):
             self.status.set("Решение показано.")
         except Exception as exc:
             messagebox.showerror("Ошибка", f"Решение не показано:\n{exc}")
+
+    def ui_save(self) -> None:
+        try:
+            if self.solution is None or self.puzzle is None:
+                raise SudokuError("Нечего сохранять: нет активной игры.")
+            path = filedialog.asksaveasfilename(
+                title="Сохранить игру",
+                defaultextension=".txt",
+                filetypes=[("Text files", "*.txt")]
+            )
+            if not path:
+                return
+            user = self.get_user_board()
+            save_game(path, self.puzzle, self.solution, user)
+            self.status.set(f"Сохранено: {path}")
+        except Exception as exc:
+            messagebox.showerror("Ошибка", f"Не удалось сохранить:\n{exc}")
