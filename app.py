@@ -244,3 +244,22 @@ class SudokuApp(tk.Tk):
                 messagebox.showwarning("Sudoku", f"Найдено ошибок: {wrong}.")
         except Exception as exc:
             messagebox.showerror("Ошибка", f"Проверка не выполнена:\n{exc}")
+
+    def hint_one_cell(self) -> None:
+        try:
+            if self.solution is None:
+                raise SudokuError("Нет активной игры.")
+
+            user = self.get_user_board()
+            empties = [(r, c) for r in range(9) for c in range(9) if user[r][c] == 0 and not self.fixed[r][c]]
+            if not empties:
+                messagebox.showinfo("Sudoku", "Нет пустых клеток для подсказки.")
+                return
+
+            r, c = random.choice(empties)
+            self.cells[r][c].delete(0, tk.END)
+            self.cells[r][c].insert(0, str(self.solution[r][c]))
+            self.status.set(f"Подсказка: клетка ({r + 1}, {c + 1}).")
+            self.refresh_mistakes_highlight()
+        except Exception as exc:
+            messagebox.showerror("Ошибка", f"Подсказка не выполнена:\n{exc}")
