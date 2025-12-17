@@ -263,3 +263,15 @@ class SudokuApp(tk.Tk):
             self.refresh_mistakes_highlight()
         except Exception as exc:
             messagebox.showerror("Ошибка", f"Подсказка не выполнена:\n{exc}")
+
+    def solve_and_fill(self) -> None:
+        try:
+            if self.solution is None:
+                raise SudokuError("Нет активной игры.")
+            if not messagebox.askyesno("Sudoku", "Показать решение?"):
+                return
+            self._apply_board(self.solution)
+            self._lock_fixed_cells(self.solution)
+            self.status.set("Решение показано.")
+        except Exception as exc:
+            messagebox.showerror("Ошибка", f"Решение не показано:\n{exc}")
